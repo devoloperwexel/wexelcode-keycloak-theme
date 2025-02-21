@@ -1,0 +1,25 @@
+{
+  "name": "keycloak-monorepo",
+  "private": true,
+  "workspaces": [
+    "patient-theme",
+    "physio-theme"
+  ],
+  "scripts": {
+    "dev:patient": "npm run dev --workspace=patient-theme",
+    "dev:physio": "npm run dev --workspace=physio-theme",
+    "dev": "npm-run-all --parallel dev:patient dev:physio",
+    "build:patient": "npm run build --workspace=patient-theme",
+    "build:physio": "npm run build --workspace=physio-theme",
+    "build-theme:patient": "npm run build-keycloak-theme --workspace=patient-theme",
+    "build-theme:physio": "npm run build-keycloak-theme --workspace=physio-theme",
+    "build": "npm-run-all build:patient build:physio",
+    "build-theme": "npm-run-all build-theme:patient build-theme:physio",
+    "test:patient": "npm run test --workspace=patient-theme",
+    "test:physio": "npm run test --workspace=physio-theme",
+    "test": "npm-run-all test:patient test:physio"
+  },
+  "devDependencies": {
+    "npm-run-all": "^4.1.5"
+  }
+}
