@@ -1,0 +1,99 @@
+name: CI/CD - Keycloak Theme
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - staging
+
+jobs:
+  build-theme:
+    runs-on: ubuntu-latest
+    container:
+      image: node:18
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Dependencies
+        run: yarn install
+
+      - name: Build Keycloak Theme
+        run: yarn run build-theme
+
+      - name: Copy JAR files to target
+        run: |
+          mkdir -p target
+          cp patient-theme/dist_keycloak/keycloak-theme-for-kc-22-to-25.jar target/patient-theme.jar
+          cp physio-theme/dist_keycloak/keycloak-theme-for-kc-22-to-25.jar target/physio-theme.jar
+
+# deploy-dev:
+#   needs: build-theme
+#   if: github.ref == 'refs/heads/develop' # Run only for Development
+#   runs-on: ubuntu-latest
+#   steps:
+#     - name: Checkout code
+#       uses: actions/checkout@v4
+
+#     - name: Configure AWS Credentials
+#       uses: aws-actions/configure-aws-credentials@v2
+#       with:
+#         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#         aws-region: ${{ vars.AWS_REGION }}
+
+#     - name: Deploy to Development
+#       run: |
+#         NAMESPACE=dev
+#         POD_NAME=${{ vars.DEV_KEYCLOAK_POD }}
+#         aws eks update-kubeconfig --name ${{ vars.EKS_CLUSTER_NAME }} --region ${{ vars.AWS_REGION }}
+#         kubectl cp target/ $NAMESPACE/$POD_NAME:/opt/keycloak/providers/
+#         kubectl delete pod $POD_NAME -n $NAMESPACE  # Restart Keycloak
+
+# deploy-staging:
+#   needs: build-theme
+#   if: github.ref == 'refs/heads/staging' # Run only for Staging
+#   runs-on: ubuntu-latest
+#   steps:
+#     - name: Checkout code
+#       uses: actions/checkout@v4
+
+#     - name: Configure AWS Credentials
+#       uses: aws-actions/configure-aws-credentials@v2
+#       with:
+#         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#         aws-region: ${{ vars.AWS_REGION }}
+
+#     - name: Deploy to QA
+#       run: |
+#         NAMESPACE=staging
+#         POD_NAME=${{ vars.STAGING_KEYCLOAK_POD }}
+#         aws eks update-kubeconfig --name ${{ vars.EKS_CLUSTER_NAME }} --region ${{ vars.AWS_REGION }}
+#         kubectl cp target/ $NAMESPACE/$POD_NAME:/opt/keycloak/providers/
+#         kubectl delete pod $POD_NAME -n $NAMESPACE  # Restart Keycloak
+
+# deploy-prod:
+#   needs: build-theme
+#   if: github.ref == 'refs/heads/main' # Run only for Production
+#   runs-on: ubuntu-latest
+#   steps:
+#     - name: Checkout code
+#       uses: actions/checkout@v4
+
+#     - name: Configure AWS Credentials
+#       uses: aws-actions/configure-aws-credentials@v2
+#       with:
+#         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#         aws-region: ${{ vars.AWS_REGION }}
+
+#     - name: Deploy to Production
+#       run: |
+#         NAMESPACE=prod
+#         POD_NAME=${{ vars.PROD_KEYCLOAK_POD }}
+#         aws eks update-kubeconfig --name ${{ vars.EKS_CLUSTER_NAME }} --region ${{ vars.AWS_REGION }}
+#         kubectl cp target/ $NAMESPACE/$POD_NAME:/opt/keycloak/providers/
+#         kubectl delete pod $POD_NAME -n $NAMESPACE  # Restart Keycloak
