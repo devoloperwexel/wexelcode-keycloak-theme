@@ -9,6 +9,7 @@ on:
 
 jobs:
   build-theme:
+    name: "Build Keycloak Theme 🛠️"
     runs-on: ubuntu-latest
     container:
       image: node:18
@@ -16,6 +17,11 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+
+      - name: Install Maven
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y maven 
 
       - name: Install Dependencies
         run: yarn install
