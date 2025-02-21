@@ -20,8 +20,7 @@ jobs:
 
       - name: Install Maven
         run: |
-          sudo apt-get update
-          sudo apt-get install -y maven 
+          apt-get install -y maven 
 
       - name: Install Dependencies
         run: yarn install
