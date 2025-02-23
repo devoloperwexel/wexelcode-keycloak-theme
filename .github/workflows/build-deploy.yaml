@@ -35,74 +35,74 @@ jobs:
         cp patient-theme/dist_keycloak/keycloak-theme-for-kc-22-to-25.jar target/patient-theme.jar
         cp physio-theme/dist_keycloak/keycloak-theme-for-kc-22-to-25.jar target/physio-theme.jar
 
-deploy-dev:
-  name: "Deploy on Dev Environment 🚀"
-  needs: build-theme
-  if: github.ref == 'refs/heads/develop' # Run only for Development
-  runs-on: ubuntu-latest
-  steps:
-  - name: Checkout code
-    uses: actions/checkout@v4
+  deploy-dev:
+    name: "Deploy on Dev Environment 🚀"
+    needs: build-theme
+    if: github.ref == 'refs/heads/develop' # Run only for Development
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
 
-  - name: Configure AWS Credentials
-    uses: aws-actions/configure-aws-credentials@v2
-    with:
-      aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      aws-region: ${{ vars.AWS_REGION }}
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ vars.AWS_REGION }}
 
-  - name: Deploy to Development
-    run: |
-      NAMESPACE=dev
-      POD_NAME=${{ vars.KEYCLOAK_POD }}
-      aws eks update-kubeconfig --name ${{ vars.EKS_CLUSTER_NAME }} --region ${{ vars.AWS_REGION }}
-      kubectl cp target/ $POD_NAME:/opt/bitnami/keycloak/providers -c keycloak -n $NAMESPACE
-      kubectl delete pod $POD_NAME -n $NAMESPACE  # Restart Keycloak
+    - name: Deploy to Development
+      run: |
+        NAMESPACE=dev
+        POD_NAME=${{ vars.KEYCLOAK_POD }}
+        aws eks update-kubeconfig --name ${{ vars.EKS_CLUSTER_NAME }} --region ${{ vars.AWS_REGION }}
+        kubectl cp target/ $POD_NAME:/opt/bitnami/keycloak/providers -c keycloak -n $NAMESPACE
+        kubectl delete pod $POD_NAME -n $NAMESPACE  # Restart Keycloak
 
-deploy-staging:
-  name: "Deploy on Staging Environment 🚀"
-  needs: build-theme
-  if: github.ref == 'refs/heads/staging' # Run only for Staging
-  runs-on: ubuntu-latest
-  steps:
-  - name: Checkout code
-    uses: actions/checkout@v4
+  deploy-staging:
+    name: "Deploy on Staging Environment 🚀"
+    needs: build-theme
+    if: github.ref == 'refs/heads/staging' # Run only for Staging
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
 
-  - name: Configure AWS Credentials
-    uses: aws-actions/configure-aws-credentials@v2
-    with:
-      aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      aws-region: ${{ vars.AWS_REGION }}
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ vars.AWS_REGION }}
 
-  - name: Deploy to QA
-    run: |
-      NAMESPACE=staging
-      POD_NAME=${{ vars.KEYCLOAK_POD }}
-      aws eks update-kubeconfig --name ${{ vars.EKS_CLUSTER_NAME }} --region ${{ vars.AWS_REGION }}
-      kubectl cp target/ $POD_NAME:/opt/bitnami/keycloak/providers -c keycloak -n $NAMESPACE
-      kubectl delete pod $POD_NAME -n $NAMESPACE  # Restart Keycloak
+    - name: Deploy to QA
+      run: |
+        NAMESPACE=staging
+        POD_NAME=${{ vars.KEYCLOAK_POD }}
+        aws eks update-kubeconfig --name ${{ vars.EKS_CLUSTER_NAME }} --region ${{ vars.AWS_REGION }}
+        kubectl cp target/ $POD_NAME:/opt/bitnami/keycloak/providers -c keycloak -n $NAMESPACE
+        kubectl delete pod $POD_NAME -n $NAMESPACE  # Restart Keycloak
 
-deploy-prod:
-  name: "Deploy on Prod Environment 🚀"
-  needs: build-theme
-  if: github.ref == 'refs/heads/main' # Run only for Production
-  runs-on: ubuntu-latest
-  steps:
-  - name: Checkout code
-    uses: actions/checkout@v4
+  deploy-prod:
+    name: "Deploy on Prod Environment 🚀"
+    needs: build-theme
+    if: github.ref == 'refs/heads/main' # Run only for Production
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
 
-  - name: Configure AWS Credentials
-    uses: aws-actions/configure-aws-credentials@v2
-    with:
-      aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      aws-region: ${{ vars.AWS_REGION }}
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ vars.AWS_REGION }}
 
-  - name: Deploy to Production
-    run: |
-      NAMESPACE=prod
-      POD_NAME=${{ vars.KEYCLOAK_POD }}
-      aws eks update-kubeconfig --name ${{ vars.EKS_CLUSTER_NAME }} --region ${{ vars.AWS_REGION }}
-      kubectl cp target/ $POD_NAME:/opt/bitnami/keycloak/providers -c keycloak -n $NAMESPACE
-      kubectl delete pod $POD_NAME -n $NAMESPACE  # Restart Keycloak
+    - name: Deploy to Production
+      run: |
+        NAMESPACE=prod
+        POD_NAME=${{ vars.KEYCLOAK_POD }}
+        aws eks update-kubeconfig --name ${{ vars.EKS_CLUSTER_NAME }} --region ${{ vars.AWS_REGION }}
+        kubectl cp target/ $POD_NAME:/opt/bitnami/keycloak/providers -c keycloak -n $NAMESPACE
+        kubectl delete pod $POD_NAME -n $NAMESPACE  # Restart Keycloak
