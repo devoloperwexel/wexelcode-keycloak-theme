@@ -68,7 +68,7 @@ jobs:
         NAMESPACE=dev
         POD_NAME=${{ vars.KEYCLOAK_POD }}
         aws eks update-kubeconfig --name ${{ vars.EKS_CLUSTER_NAME }} --region ${{ vars.AWS_REGION }}
-        kubectl cp target/ $POD_NAME:/opt/bitnami/keycloak/providers -c keycloak -n $NAMESPACE
+        kubectl cp target/. $POD_NAME:/opt/bitnami/keycloak/providers -c keycloak -n $NAMESPACE
         kubectl delete pod $POD_NAME -n $NAMESPACE  # Restart Keycloak
 
   deploy-staging:
@@ -92,7 +92,7 @@ jobs:
         NAMESPACE=staging
         POD_NAME=${{ vars.KEYCLOAK_POD }}
         aws eks update-kubeconfig --name ${{ vars.EKS_CLUSTER_NAME }} --region ${{ vars.AWS_REGION }}
-        kubectl cp target/ $POD_NAME:/opt/bitnami/keycloak/providers -c keycloak -n $NAMESPACE
+        kubectl cp target/. $POD_NAME:/opt/bitnami/keycloak/providers -c keycloak -n $NAMESPACE
         kubectl delete pod $POD_NAME -n $NAMESPACE  # Restart Keycloak
 
   deploy-prod:
@@ -116,5 +116,5 @@ jobs:
         NAMESPACE=prod
         POD_NAME=${{ vars.KEYCLOAK_POD }}
         aws eks update-kubeconfig --name ${{ vars.EKS_CLUSTER_NAME }} --region ${{ vars.AWS_REGION }}
-        kubectl cp target/ $POD_NAME:/opt/bitnami/keycloak/providers -c keycloak -n $NAMESPACE
+        kubectl cp target/. $POD_NAME:/opt/bitnami/keycloak/providers -c keycloak -n $NAMESPACE
         kubectl delete pod $POD_NAME -n $NAMESPACE  # Restart Keycloak
