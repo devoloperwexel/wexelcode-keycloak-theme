@@ -35,6 +35,12 @@ jobs:
         cp patient-theme/dist_keycloak/keycloak-theme-for-kc-22-to-25.jar target/patient-theme.jar
         cp physio-theme/dist_keycloak/keycloak-theme-for-kc-22-to-25.jar target/physio-theme.jar
 
+    - name: Upload Build Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: keycloak-theme-artifacts
+        path: target/
+
   deploy-dev:
     name: "Deploy on Dev Environment 🚀"
     needs: build-theme
@@ -43,6 +49,12 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
+
+    - name: Download Build Artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: keycloak-theme-artifacts
+        path: target/
 
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v2
