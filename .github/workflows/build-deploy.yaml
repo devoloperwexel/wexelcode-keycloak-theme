@@ -38,7 +38,7 @@ jobs:
   deploy-dev:
     name: "Deploy on Dev Environment 🚀"
     needs: build-theme
-    if: github.ref == 'refs/heads/develop' # Run only for Development
+    if: github.ref == 'refs/heads/dev' # Run only for Development
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
