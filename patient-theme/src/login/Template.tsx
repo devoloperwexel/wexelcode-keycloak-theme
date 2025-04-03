@@ -8,6 +8,7 @@ import { useInitialize } from "keycloakify/login/Template.useInitialize";
 import type { I18n } from "./i18n";
 import type { KcContext } from "./KcContext";
 import logo from "../login/assets/img/logo.webp";
+import { BASE_URL } from "../utils/constants";
 
 export default function Template(props: TemplateProps<KcContext, I18n>) {
     const {
@@ -92,7 +93,7 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
             </div>
             <div className={`${kcClsx("kcLoginClass")} flex flex-col justify-center items-center min-h-screen p-4 sm:p-6 md:p-8`}>
                 <div className="flex justify-center mb-8">
-                    <a href="https://dev.wexel.life">
+                    <a href={BASE_URL}>
                         <div className="rounded-lg flex items-center justify-center">
                             <img src={logo} alt="Wexelcode Logo" className="h-16 w-24" />
                         </div>
