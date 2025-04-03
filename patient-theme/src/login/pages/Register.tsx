@@ -153,11 +153,21 @@ function TermsAcceptance(props: {
                     />
                     <label htmlFor="acceptTerms" className="text-sm text-muted-foreground ml-2 mt-0.5">
                         {language === "en" ? "I agree to the " : "Ich stimme dem zu"}
-                        <a href={language === "en" ? `${BASE_URL}/en/privacy` : `${BASE_URL}/de/privacy`} className="text-primary hover:underline">
+                        <a
+                            target="_blank"
+                            href={language === "en" ? `${BASE_URL}/en/privacy` : `${BASE_URL}/de/privacy`}
+                            className="text-primary hover:underline"
+                            rel="noreferrer"
+                        >
                             {language === "en" ? " Terms & Conditions" : " Servicebedingungen"}
                         </a>{" "}
                         {language === "en" ? "and" : "und"}
-                        <a href={language === "en" ? `${BASE_URL}/en/terms` : `${BASE_URL}/de/terms`} className="text-primary hover:underline">
+                        <a
+                            target="_blank"
+                            href={language === "en" ? `${BASE_URL}/en/terms` : `${BASE_URL}/de/terms`}
+                            className="text-primary hover:underline"
+                            rel="noreferrer"
+                        >
                             {language === "en" ? " Privacy Policy" : " Datenschutzrichtlinie"}
                         </a>
                     </label>

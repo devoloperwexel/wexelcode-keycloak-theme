@@ -95,7 +95,7 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
                 <div className="flex justify-center mb-8">
                     <a href={BASE_URL}>
                         <div className="rounded-lg flex items-center justify-center">
-                            <img src={logo} alt="Wexelcode Logo" className="h-16 w-24" />
+                            <img src={logo} alt="Wexelcode Logo" className="h-20 w-30" />
                         </div>
                     </a>
                 </div>
