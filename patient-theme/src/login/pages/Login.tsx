@@ -166,7 +166,7 @@ export default function Login(props: PageProps<Extract<KcContext, { pageId: "log
                                 <div className={kcClsx("kcFormOptionsWrapperClass")}>
                                     {realm.resetPasswordAllowed && (
                                         <span>
-                                            <a tabIndex={6} href={url.loginResetCredentialsUrl}>
+                                            <a className=" hover:text-red" tabIndex={6} href={url.loginResetCredentialsUrl}>
                                                 {msg("doForgotPassword")}
                                             </a>
                                         </span>
@@ -179,10 +179,7 @@ export default function Login(props: PageProps<Extract<KcContext, { pageId: "log
                                 <input
                                     tabIndex={7}
                                     disabled={isLoginButtonDisabled}
-                                    className={clsx(
-                                        kcClsx("kcButtonClass", "kcButtonPrimaryClass", "kcButtonBlockClass", "kcButtonLargeClass"),
-                                        "rounded-lg"
-                                    )}
+                                    className={" w-full bg-primary h-8 rounded-sm"}
                                     name="login"
                                     id="kc-login"
                                     type="submit"
