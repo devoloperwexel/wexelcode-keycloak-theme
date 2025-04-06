@@ -3,9 +3,10 @@ name: CI/CD - Keycloak Theme
 on:
   push:
     branches:
-    - main
     - dev
+    - qa
     - staging
+    - main
 
 jobs:
   build-theme:
@@ -71,6 +72,30 @@ jobs:
         kubectl cp target/. $POD_NAME:/opt/bitnami/keycloak/providers -c keycloak -n $NAMESPACE
         kubectl delete pod $POD_NAME -n $NAMESPACE  # Restart Keycloak
 
+  deploy-qa:
+    name: "Deploy on QA Environment 🚀"
+    needs: build-theme
+    if: github.ref == 'refs/heads/qa' # Run only for qa
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ vars.AWS_REGION }}
+
+    - name: Deploy to QA
+      run: |
+        NAMESPACE=qa
+        POD_NAME=${{ vars.KEYCLOAK_POD }}
+        aws eks update-kubeconfig --name ${{ vars.EKS_CLUSTER_NAME }} --region ${{ vars.AWS_REGION }}
+        kubectl cp target/. $POD_NAME:/opt/bitnami/keycloak/providers -c keycloak -n $NAMESPACE
+        kubectl delete pod $POD_NAME -n $NAMESPACE  # Restart Keycloak       
+
   deploy-staging:
     name: "Deploy on Staging Environment 🚀"
     needs: build-theme
@@ -87,7 +112,7 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ vars.AWS_REGION }}
 
-    - name: Deploy to QA
+    - name: Deploy to Staging
       run: |
         NAMESPACE=staging
         POD_NAME=${{ vars.KEYCLOAK_POD }}
