@@ -75,11 +75,17 @@ jobs:
   deploy-qa:
     name: "Deploy on QA Environment 🚀"
     needs: build-theme
-    if: github.ref == 'refs/heads/qa' # Run only for qa
+    if: github.ref == 'refs/heads/qa' # Run only for QA
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
+
+    - name: Download Build Artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: keycloak-theme-artifacts
+        path: target/
 
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v2
@@ -105,6 +111,12 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
+    - name: Download Build Artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: keycloak-theme-artifacts
+        path: target/
+
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v2
       with:
@@ -128,6 +140,12 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
+
+    - name: Download Build Artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: keycloak-theme-artifacts
+        path: target/
 
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v2
