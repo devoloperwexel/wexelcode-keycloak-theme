@@ -188,7 +188,6 @@ export default function Login(props: PageProps<Extract<KcContext, { pageId: "log
                                 >
                                     <div className=" flex items-center justify-center font-semibold">
                                         {isLoginButtonDisabled && <LoadingSpinner />}
-
                                         {msgStr("doLogIn")}
                                     </div>
                                 </button>
