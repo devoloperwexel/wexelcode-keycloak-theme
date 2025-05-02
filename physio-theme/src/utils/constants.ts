@@ -1,1 +1,1 @@
-export const BASE_URL = "https://qa.physio.wexel.life";
+export const BASE_URL = "https://qa.physio.wexelcode.de";
